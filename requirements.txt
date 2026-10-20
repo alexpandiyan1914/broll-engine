@@ -4,3 +4,4 @@ pydantic-settings
 httpx
 piper-tts
 pytest
+faster-whisper

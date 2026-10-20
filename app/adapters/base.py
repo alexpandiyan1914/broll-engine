@@ -13,6 +13,7 @@ class ClipCandidate:
     licence: str
     author: str
     ai_generated: bool = False
+    tags: str = ""
 
 class FootageSource(Protocol):
     name: str

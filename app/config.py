@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     s3_secret_key: str = ""
     s3_bucket: str = "broll"
     redis_url: str = "redis://localhost:6379/0"
+    whisper_model: str = "base"
+    min_scene_seconds: float = 2.5
 
 
 settings = Settings()

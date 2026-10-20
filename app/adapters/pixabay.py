@@ -26,7 +26,7 @@ class PixabayFootage:
 
     def search(self, query, orientation="landscape", limit=8):
         data = self._get({"q": query[:100], "video_type": "film",
-                          "safesearch": "true", "per_page": 30, "order": "popular"})
+                          "safesearch": "true", "per_page": 60, "order": "popular"})
         out = []
         for v in data.get("hits", []):
             sizes = [s for s in ("large", "medium", "small")
@@ -44,7 +44,9 @@ class PixabayFootage:
                 download_url=s["url"], duration=float(v["duration"]),
                 width=w, height=h,
                 licence="Pixabay Content License (commercial use allowed, no attribution required)",
-                author=v.get("user", "unknown")))
+                author=v.get("user", "unknown"),
+                tags=v.get("tags", ""),
+            ))
             if len(out) >= limit:
                 break
         return out
