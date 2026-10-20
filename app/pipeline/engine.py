@@ -43,9 +43,9 @@ def pick_clip(sources, queries, orient, dur, used, warnings, idx):
 
 
 def run_job(script=None, audio_path=None, ratios=("16:9",), style="bright, modern",
-            burn_in=True, progress=lambda pct, msg: None):
+            burn_in=True, progress=lambda pct, msg: None, job_id=None):
     t0 = time.time()
-    root = Path(settings.data_dir) / f"run_{int(t0)}"
+    root = Path(settings.data_dir) / (f"jobs/{job_id}" if job_id else f"run_{int(t0)}")
     root.mkdir(parents=True, exist_ok=True)
     warnings = []
 

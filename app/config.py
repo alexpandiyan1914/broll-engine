@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     whisper_model: str = "base"
     min_scene_seconds: float = 2.5
+    max_concurrent_jobs: int = 1
+    callback_secret: str = "change-me"
+    max_audio_mb: int = 200
 
 
 settings = Settings()
