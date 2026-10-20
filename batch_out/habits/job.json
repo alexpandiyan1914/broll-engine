@@ -1,0 +1,16 @@
+{
+  "job_id": "29903b02c56e",
+  "status": "succeeded",
+  "progress": 100,
+  "message": "Done",
+  "result": {
+    "files": {
+      "video_16x9.mp4": "/api/v1/jobs/29903b02c56e/files/video_16x9.mp4",
+      "captions.srt": "/api/v1/jobs/29903b02c56e/files/captions.srt",
+      "timeline.json": "/api/v1/jobs/29903b02c56e/files/timeline.json",
+      "manifest.json": "/api/v1/jobs/29903b02c56e/files/manifest.json"
+    },
+    "warnings": []
+  },
+  "error": null
+}

@@ -1,0 +1,22 @@
+{
+  "16:9": [
+    {
+      "scene": 0,
+      "text": "I am not saving money starts with a plan, tracker spending every week.",
+      "start": 0.0,
+      "end": 3.901,
+      "query_method": "heuristic",
+      "named_entities": [],
+      "sensitive": false,
+      "clip_id": "pixabay-12751",
+      "source": "pixabay",
+      "url": "https://pixabay.com/videos/id-12751/",
+      "licence": "Pixabay Content License (commercial use allowed, no attribution required)",
+      "author": "Westark",
+      "ai_generated": false,
+      "query": "am not saving money",
+      "tag_overlap_score": 2,
+      "reason": "best tag overlap (2) among unused 'landscape' results for 'am not saving money'"
+    }
+  ]
+}

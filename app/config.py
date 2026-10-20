@@ -14,17 +14,19 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     llm_model: str = "gemini-2.0-flash"
     piper_model: str = "models/en_US-lessac-medium.onnx"
+    whisper_model: str = "base"
+    min_scene_seconds: float = 2.5
+    max_audio_seconds: int = 600
+    max_audio_mb: int = 200
+    max_concurrent_jobs: int = 1
+    callback_secret: str = "change-me"
+    fallback_enabled: bool = True
     data_dir: str = "data"
     s3_endpoint: str = "http://localhost:9000"
     s3_access_key: str = ""
     s3_secret_key: str = ""
     s3_bucket: str = "broll"
     redis_url: str = "redis://localhost:6379/0"
-    whisper_model: str = "base"
-    min_scene_seconds: float = 2.5
-    max_concurrent_jobs: int = 1
-    callback_secret: str = "change-me"
-    max_audio_mb: int = 200
 
 
 settings = Settings()

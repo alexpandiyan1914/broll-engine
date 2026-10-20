@@ -1,0 +1,45 @@
+{
+  "warnings": [
+    "keyword fallback queries in use: LLM call failed: Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash"
+  ],
+  "language": "en",
+  "audio_seconds": 3.9,
+  "seconds_total": 14.9,
+  "timings": {
+    "transcribe_s": 0.9,
+    "footage_and_render_s": 7.0
+  },
+  "settings": {
+    "ratios": [
+      "16:9"
+    ],
+    "style": "bright, modern, real-world footage",
+    "avoid": [],
+    "burn_in": true,
+    "min_scene_seconds": 2.5
+  },
+  "providers": {
+    "footage": "pixabay",
+    "stt": "faster-whisper/base",
+    "tts": "models/en_US-lessac-medium.onnx",
+    "llm": "gemini-3.6-flash"
+  },
+  "versions": {
+    "faster_whisper": "1.2.1",
+    "piper_tts": "1.8.0",
+    "httpx": "0.28.1",
+    "app": "0.3.0"
+  },
+  "seed": null,
+  "seed_note": "no random sampling; output depends only on inputs and provider results",
+  "cost_estimate_usd": 0.0,
+  "cost_note": "free-tier APIs and local models only; compute cost not included",
+  "rights": {
+    "licences_used": [
+      "Pixabay Content License (commercial use allowed, no attribution required)"
+    ],
+    "ai_generated_clips": 0,
+    "generated_fallback_clips": 0,
+    "all_commercial_use": true
+  }
+}

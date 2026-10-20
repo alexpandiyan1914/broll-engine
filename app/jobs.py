@@ -114,7 +114,7 @@ def _run(job_id):
         audio = _fetch_audio(req["audio_url"], root) if req.get("audio_url") else None
         res = engine.run_job(
             script=req.get("script"), audio_path=audio, ratios=req["aspect_ratios"],
-            style=req["style"], burn_in=req["captions"]["burn_in"],
+            style=req["style"], avoid=req.get("avoid", []), burn_in=req["captions"]["burn_in"],
             progress=lambda pct, msg: _update(job_id, progress=int(pct), message=msg),
             job_id=job_id)
         _write_timeline(root, req["aspect_ratios"])
