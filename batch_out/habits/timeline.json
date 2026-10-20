@@ -1,0 +1,22 @@
+{
+  "16:9": [
+    {
+      "scene": 0,
+      "text": "I omelette small habits build real wealth over time, dark today.",
+      "start": 0.0,
+      "end": 4.005,
+      "query_method": "llm",
+      "named_entities": [],
+      "sensitive": false,
+      "clip_id": "pixabay-13100",
+      "source": "pixabay",
+      "url": "https://pixabay.com/videos/id-13100/",
+      "licence": "Pixabay Content License (commercial use allowed, no attribution required)",
+      "author": "StefWithAnF",
+      "ai_generated": false,
+      "query": "coins in glass jar",
+      "tag_overlap_score": 1,
+      "reason": "best tag overlap (1) among unused 'landscape' results for 'coins in glass jar'"
+    }
+  ]
+}

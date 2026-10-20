@@ -1,0 +1,18 @@
+{
+  "job_id": "94406b775d62",
+  "status": "succeeded",
+  "progress": 100,
+  "message": "Done",
+  "result": {
+    "files": {
+      "video_16x9.mp4": "/api/v1/jobs/94406b775d62/files/video_16x9.mp4",
+      "captions.srt": "/api/v1/jobs/94406b775d62/files/captions.srt",
+      "timeline.json": "/api/v1/jobs/94406b775d62/files/timeline.json",
+      "manifest.json": "/api/v1/jobs/94406b775d62/files/manifest.json"
+    },
+    "warnings": [
+      "keyword fallback queries in use: LLM call failed: Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash"
+    ]
+  },
+  "error": null
+}

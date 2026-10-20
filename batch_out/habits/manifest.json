@@ -1,0 +1,43 @@
+{
+  "warnings": [],
+  "language": "en",
+  "audio_seconds": 4.01,
+  "seconds_total": 27.6,
+  "timings": {
+    "transcribe_s": 3.6,
+    "footage_and_render_s": 15.7
+  },
+  "settings": {
+    "ratios": [
+      "16:9"
+    ],
+    "style": "bright, modern, real-world footage",
+    "avoid": [],
+    "burn_in": true,
+    "min_scene_seconds": 2.5
+  },
+  "providers": {
+    "footage": "pixabay",
+    "stt": "faster-whisper/base",
+    "tts": "models/en_US-lessac-medium.onnx",
+    "llm": "gemini-3.6-flash"
+  },
+  "versions": {
+    "faster_whisper": "1.2.1",
+    "piper_tts": "1.8.0",
+    "httpx": "0.28.1",
+    "app": "0.3.0"
+  },
+  "seed": null,
+  "seed_note": "no random sampling; output depends only on inputs and provider results",
+  "cost_estimate_usd": 0.0,
+  "cost_note": "free-tier APIs and local models only; compute cost not included",
+  "rights": {
+    "licences_used": [
+      "Pixabay Content License (commercial use allowed, no attribution required)"
+    ],
+    "ai_generated_clips": 0,
+    "generated_fallback_clips": 0,
+    "all_commercial_use": true
+  }
+}

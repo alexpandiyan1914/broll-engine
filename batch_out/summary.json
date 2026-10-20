@@ -1,0 +1,20 @@
+[
+  {
+    "input": "habits.txt",
+    "job_id": "29903b02c56e",
+    "status": "succeeded",
+    "seconds": 32.3,
+    "warnings": [],
+    "error": null
+  },
+  {
+    "input": "money.txt",
+    "job_id": "94406b775d62",
+    "status": "succeeded",
+    "seconds": 15.1,
+    "warnings": [
+      "keyword fallback queries in use: LLM call failed: Server error '503 Service Unavailable' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash"
+    ],
+    "error": null
+  }
+]
