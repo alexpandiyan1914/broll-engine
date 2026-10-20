@@ -33,4 +33,4 @@ def assemble(parts: list[Path], narration: Path, out: Path):
     lst.write_text("".join(f"file '{p.resolve().as_posix()}'\n" for p in parts))
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
         "-i", str(lst), "-i", str(narration), "-map", "0:v", "-map", "1:a",
-        "-c:v", "copy", "-c:a", "aac", "-shortest", str(out)], check=True)
+        "-c:v", "copy", "-c:a", "aac", "-movflags", "+faststart", "-shortest", str(out)], check=True)

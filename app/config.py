@@ -22,11 +22,14 @@ class Settings(BaseSettings):
     callback_secret: str = "change-me"
     fallback_enabled: bool = True
     data_dir: str = "data"
+    storage_backend: str = "local"
     s3_endpoint: str = "http://localhost:9000"
+    s3_public_endpoint: str = ""
     s3_access_key: str = ""
     s3_secret_key: str = ""
     s3_bucket: str = "broll"
-    redis_url: str = "redis://localhost:6379/0"
+    api_token: str = ""
+    rate_limit_per_min: int = 20
 
 
 settings = Settings()

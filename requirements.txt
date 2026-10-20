@@ -3,5 +3,9 @@ uvicorn[standard]
 pydantic-settings
 httpx
 piper-tts
-pytest
 faster-whisper
+numpy
+boto3
+python-multipart
+pyyaml
+pytest
