@@ -1,13 +1,22 @@
 services:
   api:
     build: .
-    ports: ["8000:8000"]
-    env_file: .env
-    depends_on: [redis, minio]
-  redis:
-    image: redis:7-alpine
+    ports: ["8000:7860"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      STORAGE_BACKEND: s3
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: http://localhost:9000
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin
+      S3_BUCKET: broll
+      FOOTAGE_PROVIDERS: ${FOOTAGE_PROVIDERS:-pixabay}
+    volumes: [appdata:/home/user/app/data]
+    depends_on: [minio]
   minio:
-    image: quay.io/minio/minio:latest
+    image: pgsty/silo:RELEASE.2026-09-16T00-00-00Z
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minioadmin
@@ -15,4 +24,5 @@ services:
     ports: ["9000:9000", "9001:9001"]
     volumes: [miniodata:/data]
 volumes:
+  appdata:
   miniodata:

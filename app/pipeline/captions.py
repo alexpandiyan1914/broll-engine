@@ -34,5 +34,5 @@ def burn_captions(workdir: Path, video_in: str, srt: str, video_out: str):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", video_in,
                     "-vf", f"subtitles={srt}:force_style='{style}'",
                     "-c:v", "libx264", "-preset", "veryfast", "-crf", "23",
-                    "-pix_fmt", "yuv420p", "-c:a", "copy", video_out],
+                    "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-c:a", "copy", video_out],
                    cwd=workdir, check=True)

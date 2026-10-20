@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B-roll Engine</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1b1f24}
+textarea,input[type=text],input[type=password]{width:100%;box-sizing:border-box;padding:.5rem;font:inherit}
+textarea{height:7rem}label.t{display:block;margin:.8rem 0 .2rem;font-weight:600}
+button{padding:.6rem 1.2rem;font:inherit;cursor:pointer}.row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.bar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;margin:.6rem 0}
+.bar>div{height:100%;width:0;background:#2563eb;transition:width .3s}
+video{width:100%;max-width:640px;background:#000;margin:.5rem 0;display:block}
+.warn{color:#92400e}.err{color:#b91c1c}small{color:#555}
+</style></head><body>
+<h1>Script &amp; voiceover to B-roll video</h1>
+<small>Narration, stock footage matched by meaning, captions, and a licence record per clip.</small>
+
+<label class="t" for="token">Access token (if the demo is protected)</label>
+<input id="token" type="password" autocomplete="off">
+
+<div class="row" style="margin-top:.8rem">
+  <label><input type="radio" name="mode" value="text" checked> Script (text)</label>
+  <label><input type="radio" name="mode" value="audio"> Voiceover (mp3, wav, m4a)</label>
+</div>
+<div id="textBox"><label class="t" for="script">Script</label>
+<textarea id="script">Saving money starts with a plan. Track your spending every week. Small habits build real wealth.</textarea></div>
+<div id="audioBox" style="display:none"><label class="t" for="file">Audio file</label><input id="file" type="file" accept=".mp3,.wav,.m4a"></div>
+
+<label class="t">Aspect ratios</label>
+<div class="row">
+  <label><input class="ratio" type="checkbox" value="16:9" checked> 16:9</label>
+  <label><input class="ratio" type="checkbox" value="9:16"> 9:16</label>
+  <label><input class="ratio" type="checkbox" value="1:1"> 1:1</label>
+  <label><input id="burn" type="checkbox" checked> Burn in captions</label>
+</div>
+<label class="t" for="avoid">Avoid (comma separated, optional)</label>
+<input id="avoid" type="text" placeholder="people's faces, alcohol">
+<p><button id="go">Generate video</button></p>
+
+<div class="bar"><div id="bar"></div></div>
+<div id="msg"></div>
+<div id="out"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const tok=()=>$('token').value.trim();
+const hdr=(x={})=>{const h={...x};if(tok())h['Authorization']='Bearer '+tok();return h;};
+const q=()=>tok()?'?token='+encodeURIComponent(tok()):'';
+const ratios=()=>[...document.querySelectorAll('.ratio:checked')].map(x=>x.value);
+const mode=()=>document.querySelector('input[name=mode]:checked').value;
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random());
+function say(t,cls){const m=$('msg');m.textContent=t;m.className=cls||'';}
+document.querySelectorAll('input[name=mode]').forEach(r=>r.onchange=()=>{
+  $('textBox').style.display=mode()==='text'?'':'none';
+  $('audioBox').style.display=mode()==='audio'?'':'none';});
+$('go').onclick=async()=>{
+  $('out').textContent='';$('bar').style.width='0';say('Submitting...');
+  const avoid=$('avoid').value.split(',').map(s=>s.trim()).filter(Boolean);
+  let r;
+  try{
+    if(mode()==='text'){
+      r=await fetch('/api/v1/broll/jobs',{method:'POST',
+        headers:hdr({'Content-Type':'application/json','Idempotency-Key':uid()}),
+        body:JSON.stringify({script:$('script').value,aspect_ratios:ratios(),avoid,
+          captions:{burn_in:$('burn').checked,srt:true}})});
+    }else{
+      const f=$('file').files[0];if(!f){say('Choose an audio file first','err');return;}
+      const fd=new FormData();fd.append('audio',f);fd.append('aspect_ratios',ratios().join(','));
+      fd.append('avoid',avoid.join(','));fd.append('burn_in',$('burn').checked);
+      r=await fetch('/api/v1/broll/jobs/upload',{method:'POST',headers:hdr({'Idempotency-Key':uid()}),body:fd});
+    }
+  }catch(e){say('Network error: '+e.message,'err');return;}
+  const j=await r.json();
+  if(!r.ok){say(j.error.code+': '+j.error.message,'err');return;}
+  poll(j.job_id);
+};
+async function poll(id){
+  let j;
+  try{j=await (await fetch('/api/v1/jobs/'+id,{headers:hdr()})).json();}
+  catch(e){setTimeout(()=>poll(id),3000);return;}
+  if(j.error&&j.status!=='failed'&&!j.job_id){say(j.error.code+': '+j.error.message,'err');return;}
+  $('bar').style.width=j.progress+'%';
+  if(j.status==='failed'){say('Failed - '+j.error.code+': '+j.error.message,'err');return;}
+  if(j.status==='succeeded'){say('Done');return done(j);}
+  say(j.status+' - '+j.progress+'% - '+(j.message||''));
+  setTimeout(()=>poll(id),2000);
+}
+function done(j){
+  const out=$('out');out.textContent='';
+  for(const [name,url] of Object.entries(j.result.files)){
+    if(name.endsWith('.mp4')){const v=document.createElement('video');v.controls=true;v.src=url+q();out.appendChild(v);}
+    const d=document.createElement('div');const a=document.createElement('a');
+    a.href=url+q();a.target='_blank';a.textContent=name;d.appendChild(a);out.appendChild(d);
+  }
+  const w=j.result.warnings||[];
+  if(w.length){const h=document.createElement('h3');h.textContent='Warnings';out.appendChild(h);
+    w.forEach(t=>{const p=document.createElement('div');p.className='warn';p.textContent=t;out.appendChild(p);});}
+}
+</script></body></html>

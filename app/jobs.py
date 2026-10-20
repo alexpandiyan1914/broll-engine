@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import httpx
 from app.config import settings
 from app.errors import ApiError
+from app import storage
 from app.pipeline import engine
 
 log = logging.getLogger("broll")
@@ -111,16 +112,19 @@ def _run(job_id):
     try:
         _update(job_id, status="running", progress=1, message="Starting")
         log.info("job started", extra=extra)
-        audio = _fetch_audio(req["audio_url"], root) if req.get("audio_url") else None
+        audio = (Path(req["audio_path"]) if req.get("audio_path")
+                 else _fetch_audio(req["audio_url"], root) if req.get("audio_url") else None)
         res = engine.run_job(
             script=req.get("script"), audio_path=audio, ratios=req["aspect_ratios"],
-            style=req["style"], avoid=req.get("avoid", []), burn_in=req["captions"]["burn_in"],
+            style=req["style"], burn_in=req["captions"]["burn_in"],
             progress=lambda pct, msg: _update(job_id, progress=int(pct), message=msg),
             job_id=job_id)
         _write_timeline(root, req["aspect_ratios"])
         names = [f"video_{r.replace(':', 'x')}.mp4" for r in req["aspect_ratios"]]
         names += list(PUBLIC_FILES)
         files = {n: f"/api/v1/jobs/{job_id}/files/{n}" for n in names if (root / n).exists()}
+        for n in files:
+            storage.publish(job_id, root / n)
         _update(job_id, status="succeeded", progress=100, message="Done",
                 result={"files": files, "warnings": res["warnings"]})
         log.info("job succeeded", extra=extra)
